@@ -1,0 +1,10 @@
+happy: joyful, glad, cheerful
+big: large, huge, enormous
+house: home, residence
+smart: clever, intelligent, bright
+walk: stroll, wander
+beautiful: pretty, lovely, gorgeous
+dog: canine, hound
+fast: quick, rapid, speedy
+boy: child, youngster
+likes: enjoys, loves
