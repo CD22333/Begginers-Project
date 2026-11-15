@@ -39,10 +39,10 @@ int main(int argc, char *argv[]) {
     char line[MAX_LENGTH];
     char word[MAX_LENGTH];
     char new_word[MAX_LENGTH];
-    int flag;
+    int syn_found;
     int char_holder;
-    char s_line[MAX_LENGTH];
-    char s_word[MAX_LENGTH];
+    char syn_line[MAX_LENGTH];
+    char syn_word[MAX_LENGTH];
     int i, j, k, w;
     // Each iteration of the loop reads a new line from the input file
     while (fgets(line, MAX_LENGTH, input) != NULL) {
@@ -76,31 +76,31 @@ int main(int argc, char *argv[]) {
             else {
                 char_holder='\0';
             }
-            // Reset the flag to 0 before searching for synonyms
-            flag=0;
+            // Reset the syn_found to 0 before searching for synonyms
+            syn_found=0;
             rewind(synonyms); // Reset the synonyms file pointer to the beginning
             // Read each line from the synonyms file to find a matching word
-            while (fgets(s_line, MAX_LENGTH, synonyms) != NULL) {
+            while (fgets(syn_line, MAX_LENGTH, synonyms) != NULL) {
                 // Reset the index for the current position in the synonyms line
                 k=0;
                 // Extract the word from the synonyms line until reaching a colon
-                while (s_line[k] != ':') {
-                    s_word[k]=s_line[k];
+                while (syn_line[k] != ':') {
+                    syn_word[k]=syn_line[k];
                     k++;
                 }
                 // Null-terminate the extracted word string
-                s_word[k]='\0';
+                syn_word[k]='\0';
                 // If there is a character following the colon in the synonyms line, skip it (usually a space), or jupd the start of the synonym word
-                if (s_line[k] != '\0') {
+                if (syn_line[k] != '\0') {
                     k+=2;
                 }
                 // Compare the detected word from the input line with the extracted word from the synonyms line
-                if (strcmp(word, s_word) == 0) {
-                    // If a match is found, set the flag to 1 and extract the synonym word from the synonyms line
-                    flag=1;
+                if (strcmp(word, syn_word) == 0) {
+                    // If a match is found, set the syn_found to 1 and extract the synonym word from the synonyms line
+                    syn_found=1;
                     w=0;
-                    while ((s_line[k] >= 'a' && s_line[k] <= 'z') || (s_line[k] >= 'A' && s_line[k] <= 'Z')) {
-                        new_word[w]=s_line[k];
+                    while ((syn_line[k] >= 'a' && syn_line[k] <= 'z') || (syn_line[k] >= 'A' && syn_line[k] <= 'Z')) {
+                        new_word[w]=syn_line[k];
                         k++;
                         w++;
                     }
@@ -111,7 +111,7 @@ int main(int argc, char *argv[]) {
                 }
             }
             // After checking all synonyms, print the appropriate word (either the original or the synonym) and write it to the output file. If there was a character following the word, print and write that character as well.
-            if (flag) {
+            if (syn_found) {
                 printf("%s", new_word);
                 fputs(new_word, output);
             }
@@ -125,6 +125,8 @@ int main(int argc, char *argv[]) {
             }
         }
     }
+    printf("\n");
+    fputc('\n', output);
     // Close all opened files before exiting the program
     fclose(input);
     fclose(synonyms);
